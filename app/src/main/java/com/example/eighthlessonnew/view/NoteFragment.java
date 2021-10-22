@@ -1,6 +1,7 @@
 package com.example.eighthlessonnew.view;
 
 import android.os.Bundle;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -50,7 +51,7 @@ public class NoteFragment extends Fragment implements MyOnClickListener{// им�
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
                                                                                             // переиспользование
-        adapter = new NoteAdapter(data);
+        adapter = new NoteAdapter(data,this);
         adapter.setOnMyOnClickListener(this);  // установка адаптера
         recyclerView.setAdapter(adapter);
 //----------------------------------------------------------------------------------------------------------------------------
@@ -78,7 +79,9 @@ public class NoteFragment extends Fragment implements MyOnClickListener{// им�
                         "Описание"+data.size(),
                         R.drawable.auto,false));
                         adapter.notifyItemInserted(data.size()-1);   // notify - обновить
-                        recyclerView.smoothScrollToPosition(data.size()-1);  // плавный скролл до последней позиции при добавлении новой карточки
+                      //  recyclerView.scrollToPosition(data.size()-1);      //  резкий скролл до последней позиции при добавлении новой карточки
+                        recyclerView.smoothScrollToPosition(data.size()-1);// плавный скролл до последней позиции при добавлении новой карточки
+
                 return true;
             case R.id.action_clear:
                 data.clearCardData();
@@ -87,5 +90,30 @@ public class NoteFragment extends Fragment implements MyOnClickListener{// им�
         }
 
         return super.onOptionsItemSelected(item);
+    }
+//--------------------------------------------------------------------------------------------------------
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);                                                    // меню выскакивающая по нажатию на картинку
+        requireActivity().getMenuInflater().inflate(R.menu.card_menu,menu);
+    }
+//--------------------------------------------------------------------------------------------------------
+
+
+    @Override
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
+        int position = adapter.getMenuContextClickPosition();
+        switch (item.getItemId()){
+            case R.id.action_update:
+                data.getCardData(position).setTitle("Обновили"+position);
+                adapter.notifyItemChanged(position);
+
+                return true;
+            case R.id.action_delete:
+                data.deleteCardData(position);
+                adapter.notifyItemRemoved(position);
+                return true;
+        }
+        return super.onContextItemSelected(item);
     }
 }

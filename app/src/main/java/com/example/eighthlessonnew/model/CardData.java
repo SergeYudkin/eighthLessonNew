@@ -2,6 +2,8 @@ package com.example.eighthlessonnew.model;
 
 public class CardData {
 
+
+
     private String title;
     private String description;
     private int picture;
@@ -13,6 +15,9 @@ public class CardData {
         this.description = description;
         this.picture = picture;
         this.like = like;
+    }
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getTitle() {
@@ -30,5 +35,7 @@ public class CardData {
     public boolean isLike() {
         return like;
     }
+
+
 }
 

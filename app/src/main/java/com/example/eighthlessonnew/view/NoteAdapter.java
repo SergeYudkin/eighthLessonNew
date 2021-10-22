@@ -7,6 +7,7 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.eighthlessonnew.R;
@@ -15,11 +16,20 @@ import com.example.eighthlessonnew.model.CardSource;
 public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.MyViewHolder> {
 
     private CardSource dataSource;
-
     private MyOnClickListener listener;
+    private Fragment fragment;
 
-    public NoteAdapter(CardSource dataSource) {
+    private int menuContextClickPosition;
+
+    public int getMenuContextClickPosition() {
+        return menuContextClickPosition;
+    }
+
+
+
+    public NoteAdapter(CardSource dataSource,Fragment fragment) {
         this.dataSource = dataSource;
+        this.fragment = fragment;
     }
 
 
@@ -68,6 +78,8 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.MyViewHolder> 
             imageView = itemView.findViewById(R.id.imageView);
             like = itemView.findViewById(R.id.like);
 
+            fragment.registerForContextMenu(imageView);
+
             imageView.setOnClickListener(new View.OnClickListener() {   // обработчик нажатий
                 @Override
                 public void onClick(View v) {
@@ -75,6 +87,16 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.MyViewHolder> 
 
                 }
             });
+   //-----------------------------------------------------------------------------------
+            imageView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    menuContextClickPosition = getAdapterPosition();
+                    imageView.showContextMenu(200,200);       // меню выпадает при нажатии на картинку
+                    return true;
+                }
+            });
+   //--------------------------------------------------------------------------------------
         }
     }
 }
