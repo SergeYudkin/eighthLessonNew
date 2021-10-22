@@ -2,7 +2,9 @@
     <!-- Base application theme. -->
     <style name="Theme.EighthLessonNew" parent="Theme.MaterialComponents.Light.DarkActionBar">
         <item name="android:spotShadowAlpha" tools:targetApi="lollipop">1</item>
+        <item name="android:ambientShadowAlpha" tools:targetApi="lollipop">1</item>
         <!-- Primary brand color. -->
+
 
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>

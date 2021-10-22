@@ -5,6 +5,8 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.os.Bundle;
 
+import com.example.eighthlessonnew.view.NoteFragment;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -12,6 +14,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initToolbar();
+        if(savedInstanceState==null){
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragmentContainer, NoteFragment.newInstance())
+                    .commit();
+        }
     }
 
     private Toolbar initToolbar() {

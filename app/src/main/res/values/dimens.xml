@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="card_view_margin">10dp</dimen>
+    <dimen name="coroner_radius_card_view">15dp</dimen>
+    <dimen name="card_elevation_card_view">40dp</dimen>
+    <dimen name="image_view_height">230dp</dimen>
+    <dimen name="text_size_title">30sp</dimen>
+    <dimen name="text_size_description">20sp</dimen>
+    <dimen name="separator_height">3dp</dimen>
+</resources>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <string-array name="test_title">
+
+       <item>Один</item>
+        <item>Два</item>
+        <item>Три</item>
+        <item>Четыре</item>
+        <item>Пять</item>
+        <item>Шесть</item>
+
+    </string-array>
+
+  <string-array name="titles">
+   <item>Дом</item>
+   <item>Двор</item>
+   <item>Автомобиль</item>
+   <item>Квартира</item>
+   <item>Работа</item>
+   <item>Учёба</item>
+   <item>Жена</item>
+  </string-array>
+
+   <string-array name="description">
+    <item>Укрепить фундамент
+    Зашить франтон</item>
+    <item>Доложить брусчатку
+    Накрыть на зиму детскую площадку</item>
+    <item>Заменить свечи
+    Заменить масло
+    Заменить ВВ провода
+    Заменить воздушный фильтр</item>
+    <item>Доделать откосы</item>
+    <item>Не перетрудиться</item>
+    <item>Не бросить</item>
+    <item>Любить сильно
+    Купить шубу</item>
+   </string-array>
+
+ <array name="pictures">
+  <item>@drawable/dom</item>
+  <item>@drawable/dvor</item>
+  <item>@drawable/auto</item>
+  <item>@drawable/remont</item>
+  <item>@drawable/work</item>
+  <item>@drawable/granit</item>
+  <item>@drawable/wife</item>
+
+ </array>
+
+
+    
+</resources>
