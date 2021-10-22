@@ -21,7 +21,13 @@ public class MainActivity extends AppCompatActivity {
                     .commit();
         }
     }
-
+ //------------------------------------------------------------
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.activity_menu,menu);   // меню в активити в тулбаре будет доступно всегда
+        return super.onCreateOptionsMenu(menu);
+    }
+//-----------------------------------------------------------------
 
     private Toolbar initToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);

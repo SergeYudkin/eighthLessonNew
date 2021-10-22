@@ -16,10 +16,15 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.eighthlessonnew.R;
+import com.example.eighthlessonnew.model.CardData;
 import com.example.eighthlessonnew.model.CardSource;
 import com.example.eighthlessonnew.model.CardSourceImpl;
 
-public class NoteFragment extends Fragment implements MyOnClickListener{   // имплемент майКликЛисенер  реализует его поведение
+public class NoteFragment extends Fragment implements MyOnClickListener{// имплемент майКликЛисенер  реализует его поведение
+
+    private CardSource data;
+    private NoteAdapter adapter;
+    private RecyclerView recyclerView;
 
     public static NoteFragment newInstance(){
         return new NoteFragment();
@@ -28,12 +33,12 @@ public class NoteFragment extends Fragment implements MyOnClickListener{   // и
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
-        setHasOptionsMenu(true);
+        setHasOptionsMenu(true); // включает меню в фрагменте
 
        View view = inflater.inflate(R.layout.note_fragment,container,false);
-       CardSource data = new CardSourceImpl(getResources()).init();
+       data = new CardSourceImpl(getResources()).init();
 
-        RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
+        recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
 
         initRecyclerView(data, recyclerView);
@@ -45,11 +50,11 @@ public class NoteFragment extends Fragment implements MyOnClickListener{   // и
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
                                                                                             // переиспользование
-        NoteAdapter noteAdapter = new NoteAdapter(data);
-        noteAdapter.setOnMyOnClickListener(this);
-        recyclerView.setAdapter(noteAdapter);
+        adapter = new NoteAdapter(data);
+        adapter.setOnMyOnClickListener(this);  // установка адаптера
+        recyclerView.setAdapter(adapter);
 //----------------------------------------------------------------------------------------------------------------------------
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(),LinearLayoutManager.VERTICAL);   // добавление разделителя
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(),LinearLayoutManager.VERTICAL);   // добавление разделителя карточек
         dividerItemDecoration.setDrawable(getResources().getDrawable(R.drawable.separator));
         recyclerView.addItemDecoration(dividerItemDecoration);
     }
@@ -61,7 +66,7 @@ public class NoteFragment extends Fragment implements MyOnClickListener{   // и
     }
 //-------------------------------------------------------------------------------------------
     @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu,@NonNull MenuInflater inflater) {
+    public void onCreateOptionsMenu(@NonNull Menu menu,@NonNull MenuInflater inflater) {  //   меню  в туллбаре
         inflater.inflate(R.menu.fragment_menu,menu);
     }
 //--------------------------------------------------------------------------------------------
@@ -69,8 +74,15 @@ public class NoteFragment extends Fragment implements MyOnClickListener{   // и
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.action_add:
+                data.addCardData(new CardData("Новая"+data.size(),
+                        "Описание"+data.size(),
+                        R.drawable.auto,false));
+                        adapter.notifyItemInserted(data.size()-1);   // notify - обновить
+                        recyclerView.smoothScrollToPosition(data.size()-1);  // плавный скролл до последней позиции при добавлении новой карточки
                 return true;
             case R.id.action_clear:
+                data.clearCardData();
+                adapter.notifyDataSetChanged();
                 return true;
         }
 
