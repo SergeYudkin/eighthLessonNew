@@ -11,7 +11,10 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.eighthlessonnew.R;
+import com.example.eighthlessonnew.model.CardData;
 import com.example.eighthlessonnew.model.CardSource;
+
+import java.text.SimpleDateFormat;
 
 public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.MyViewHolder> {
 
@@ -38,7 +41,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.MyViewHolder> 
         this.listener = listener;
     }
 
-    public void setData(CardSource dataSource){ this.dataSource = dataSource; }
+
 
 
     @Override
@@ -54,6 +57,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.MyViewHolder> 
         holder.description.setText(dataSource.getCardData(position).getDescription());
         holder.imageView.setImageResource(dataSource.getCardData(position).getPicture());
         holder.like.setChecked(dataSource.getCardData(position).isLike());
+       // holder.date.setDate(dataSource.getCardData(position));
 
     }
 
@@ -69,7 +73,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.MyViewHolder> 
          TextView description;
          ImageView imageView;
          CheckBox like;
-
+         TextView date;
 
         public MyViewHolder( View itemView) {
             super(itemView);
@@ -77,6 +81,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.MyViewHolder> 
             description = itemView.findViewById(R.id.description);
             imageView = itemView.findViewById(R.id.imageView);
             like = itemView.findViewById(R.id.like);
+            date = itemView.findViewById(R.id.date);
 
             fragment.registerForContextMenu(imageView);
 
@@ -97,6 +102,14 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.MyViewHolder> 
                 }
             });
    //--------------------------------------------------------------------------------------
+        }
+        public void setDate (CardData cardData){
+            title.setText(cardData.getTitle());
+           // date.setText(cardData.getDate().toString());
+            description.setText(cardData.getDescription());
+            like.setChecked(cardData.isLike());
+            imageView.setImageResource(cardData.getPicture());
+            date.setText(new SimpleDateFormat("dd-mm-yy").format(cardData.getDate()));
         }
     }
 }

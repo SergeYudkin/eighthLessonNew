@@ -6,6 +6,7 @@ import android.content.res.TypedArray;
 import com.example.eighthlessonnew.R;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class CardSourceImpl implements CardSource {
@@ -60,7 +61,7 @@ public class CardSourceImpl implements CardSource {
              pictures[i] = typedArray.getResourceId(i,-1);
          }
          for (int i = 0; i <titles.length; i++){
-             dataSource.add(new CardData(titles[i],description[i],pictures[i],false));
+             dataSource.add(new CardData(titles[i],description[i],pictures[i],false, Calendar.getInstance().getTime()));
 
          }
          return this;

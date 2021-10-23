@@ -1,5 +1,6 @@
 package com.example.eighthlessonnew.view;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -11,33 +12,63 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.eighthlessonnew.MainActivity;
+import com.example.eighthlessonnew.Navigation;
 import com.example.eighthlessonnew.R;
 import com.example.eighthlessonnew.model.CardData;
 import com.example.eighthlessonnew.model.CardSource;
 import com.example.eighthlessonnew.model.CardSourceImpl;
+import com.example.eighthlessonnew.observe.Observer;
+import com.example.eighthlessonnew.observe.Publisher;
+
+import java.util.Calendar;
 
 public class NoteFragment extends Fragment implements MyOnClickListener{// имплемент майКликЛисенер  реализует его поведение
 
     private CardSource data;
     private NoteAdapter adapter;
     private RecyclerView recyclerView;
+    private Navigation navigation;
+    private Publisher publisher;
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        MainActivity activity = (MainActivity)context;
+        navigation = activity.getNavigation();
+        publisher = activity.getPublisher();
+    }
+
+    @Override
+    public void onDetach() {
+        navigation = null;
+        publisher = null;
+        super.onDetach();
+    }
 
     public static NoteFragment newInstance(){
         return new NoteFragment();
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        data = new CardSourceImpl(getResources()).init();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
         setHasOptionsMenu(true); // включает меню в фрагменте
 
        View view = inflater.inflate(R.layout.note_fragment,container,false);
-       data = new CardSourceImpl(getResources()).init();
+
 
         recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
@@ -54,6 +85,12 @@ public class NoteFragment extends Fragment implements MyOnClickListener{// им�
         adapter = new NoteAdapter(data,this);
         adapter.setOnMyOnClickListener(this);  // установка адаптера
         recyclerView.setAdapter(adapter);
+//----------------------------------------------------------------------------------------------------
+        DefaultItemAnimator defaultItemAnimator = new DefaultItemAnimator();
+        defaultItemAnimator.setAddDuration(1000);
+        defaultItemAnimator.setChangeDuration(1000);                            // анимация плавного исчезания- появления-обновления
+        defaultItemAnimator.setRemoveDuration(1000);
+        recyclerView.setItemAnimator(defaultItemAnimator);
 //----------------------------------------------------------------------------------------------------------------------------
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(),LinearLayoutManager.VERTICAL);   // добавление разделителя карточек
         dividerItemDecoration.setDrawable(getResources().getDrawable(R.drawable.separator));
@@ -75,12 +112,14 @@ public class NoteFragment extends Fragment implements MyOnClickListener{// им�
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.action_add:
-                data.addCardData(new CardData("Новая"+data.size(),
-                        "Описание"+data.size(),
-                        R.drawable.auto,false));
-                        adapter.notifyItemInserted(data.size()-1);   // notify - обновить
-                      //  recyclerView.scrollToPosition(data.size()-1);      //  резкий скролл до последней позиции при добавлении новой карточки
-                        recyclerView.smoothScrollToPosition(data.size()-1);// плавный скролл до последней позиции при добавлении новой карточки
+                navigation.addFragment(CardUpdateFragment.newInstance(),true);
+                publisher.subscribe(new Observer() {
+                    @Override
+                    public void updateState(CardData cardData) {
+                        data.addCardData(cardData);
+                        adapter.notifyItemInserted(data.size()-1);
+                    }
+                });
 
                 return true;
             case R.id.action_clear:
@@ -105,8 +144,14 @@ public class NoteFragment extends Fragment implements MyOnClickListener{// им�
         int position = adapter.getMenuContextClickPosition();
         switch (item.getItemId()){
             case R.id.action_update:
-                data.getCardData(position).setTitle("Обновили"+position);
-                adapter.notifyItemChanged(position);
+                navigation.addFragment(CardUpdateFragment.newInstance(data.getCardData(position)),true);
+                publisher.subscribe(new Observer() {
+                    @Override
+                    public void updateState(CardData cardData) {
+                        data.updateCardData(position,cardData);
+                        adapter.notifyItemInserted(position);
+                    }
+                });
 
                 return true;
             case R.id.action_delete:
