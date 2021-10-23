@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "873871773168",
+    "project_id": "eighthlessonnew",
+    "storage_bucket": "eighthlessonnew.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:873871773168:android:6725d4bc72ada5bf876135",
+        "android_client_info": {
+          "package_name": "com.example.eighthlessonnew"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "873871773168-u8uo95h23h1aoc07d4gcne148klaa5fg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBijSE1GFqCZvn9XOqG3Oh_-1RgKdWVq0M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "873871773168-u8uo95h23h1aoc07d4gcne148klaa5fg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
