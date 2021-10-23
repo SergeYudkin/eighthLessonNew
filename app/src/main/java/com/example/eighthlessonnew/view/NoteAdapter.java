@@ -18,6 +18,11 @@ import java.text.SimpleDateFormat;
 
 public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.MyViewHolder> {
 
+    public void setDataSource(CardSource dataSource) {
+        this.dataSource = dataSource;
+        notifyDataSetChanged();
+    }
+
     private CardSource dataSource;
     private MyOnClickListener listener;
     private Fragment fragment;
@@ -30,8 +35,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.MyViewHolder> 
 
 
 
-    public NoteAdapter(CardSource dataSource,Fragment fragment) {
-        this.dataSource = dataSource;
+    public NoteAdapter(Fragment fragment) {
         this.fragment = fragment;
     }
 

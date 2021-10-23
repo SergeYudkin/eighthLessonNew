@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-public class CardSourceImpl implements CardSource {
+public class CardSourceLocalImpl implements CardSource {
 
     private List<CardData> dataSource;
 
@@ -40,17 +40,21 @@ public class CardSourceImpl implements CardSource {
         dataSource.clear();
     }
 
+
+
     @Override
     public CardData getCardData(int position) {
         return dataSource.get(position);
     }
 
-    public CardSourceImpl(Resources resources){
+    public CardSourceLocalImpl(Resources resources){
         dataSource = new ArrayList<>();
         this.resources = resources;
     }
 
-     public CardSourceImpl init(){
+
+
+     public CardSourceLocalImpl init(CardSourceResponse cardSourceResponse){
 
         String[] titles = resources.getStringArray(R.array.titles);
         String[] description = resources.getStringArray(R.array.description);
@@ -63,6 +67,9 @@ public class CardSourceImpl implements CardSource {
          for (int i = 0; i <titles.length; i++){
              dataSource.add(new CardData(titles[i],description[i],pictures[i],false, Calendar.getInstance().getTime()));
 
+         }
+         if(cardSourceResponse!=null){
+             cardSourceResponse.initialized(this);
          }
          return this;
      }

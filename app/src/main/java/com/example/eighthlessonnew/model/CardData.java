@@ -7,6 +7,37 @@ import java.util.Date;
 
 public class CardData implements Parcelable {
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+
+    private String id;
+    private String title;
+    private String description;
+    private int picture;
+    private boolean like;
+    private Date date;
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setPicture(int picture) {
+        this.picture = picture;
+    }
+    public void setLike(boolean like) {
+        this.like = like;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
     protected CardData(Parcel in) {
         title = in.readString();
         description = in.readString();
@@ -43,18 +74,9 @@ public class CardData implements Parcelable {
         this.title = title;
     }
 
-
-    private String title;
-    private String description;
-    private int picture;
-    private boolean like;
-    private Date date;
-
     public Date getDate() {
         return date;
     }
-
-
 
     public CardData(String title, String description, int picture, boolean like,Date date) {
         this.title = title;
@@ -63,7 +85,6 @@ public class CardData implements Parcelable {
         this.like = like;
         this.date= date;
     }
-
 
     public String getTitle() {
         return title;
@@ -80,12 +101,6 @@ public class CardData implements Parcelable {
     public boolean isLike() {
         return like;
     }
-
-
-
-
-
-
 
 }
 

@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -24,11 +23,11 @@ import com.example.eighthlessonnew.Navigation;
 import com.example.eighthlessonnew.R;
 import com.example.eighthlessonnew.model.CardData;
 import com.example.eighthlessonnew.model.CardSource;
-import com.example.eighthlessonnew.model.CardSourceImpl;
+import com.example.eighthlessonnew.model.CardSourceLocalImpl;
+import com.example.eighthlessonnew.model.CardSourceResponse;
+import com.example.eighthlessonnew.model.CardsSourceRemoteImpl;
 import com.example.eighthlessonnew.observe.Observer;
 import com.example.eighthlessonnew.observe.Publisher;
-
-import java.util.Calendar;
 
 public class NoteFragment extends Fragment implements MyOnClickListener{// имплемент майКликЛисенер  реализует его поведение
 
@@ -57,11 +56,7 @@ public class NoteFragment extends Fragment implements MyOnClickListener{// им�
         return new NoteFragment();
     }
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        data = new CardSourceImpl(getResources()).init();
-    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
@@ -74,7 +69,22 @@ public class NoteFragment extends Fragment implements MyOnClickListener{// им�
         recyclerView.setHasFixedSize(true);
 
         initRecyclerView(data, recyclerView);
+        if(false) {
+            data = new CardSourceLocalImpl(getResources()).init(new CardSourceResponse() {
+                @Override
+                public void initialized(CardSource cardSource) {
 
+                }
+            });
+        }else {
+            data = new CardsSourceRemoteImpl().init(new CardSourceResponse() {
+                @Override
+                public void initialized(CardSource cardSource) {
+                    adapter.notifyDataSetChanged();
+                }
+            });
+        }
+        adapter.setDataSource(data);
         return view;
     }
 //--------------------------------------------------------------------------------------------
@@ -82,7 +92,7 @@ public class NoteFragment extends Fragment implements MyOnClickListener{// им�
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
                                                                                             // переиспользование
-        adapter = new NoteAdapter(data,this);
+        adapter = new NoteAdapter(this);
         adapter.setOnMyOnClickListener(this);  // установка адаптера
         recyclerView.setAdapter(adapter);
 //----------------------------------------------------------------------------------------------------

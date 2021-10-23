@@ -3,6 +3,9 @@ package com.example.eighthlessonnew.model;
 
 
 public interface CardSource {
+
+    CardSource init(CardSourceResponse cardSourceResponse);
+
     CardData getCardData(int position);
     int size();
 //---------------------------------------------------------------
