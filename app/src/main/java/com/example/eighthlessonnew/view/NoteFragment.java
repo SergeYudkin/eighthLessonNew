@@ -1,6 +1,7 @@
 package com.example.eighthlessonnew.view;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -9,9 +10,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -31,11 +34,14 @@ import com.example.eighthlessonnew.observe.Publisher;
 
 public class NoteFragment extends Fragment implements MyOnClickListener{// имплемент майКликЛисенер  реализует его поведение
 
+
+
     private CardSource data;
     private NoteAdapter adapter;
     private RecyclerView recyclerView;
     private Navigation navigation;
     private Publisher publisher;
+
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -116,6 +122,7 @@ public class NoteFragment extends Fragment implements MyOnClickListener{// им�
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu,@NonNull MenuInflater inflater) {  //   меню  в туллбаре
         inflater.inflate(R.menu.fragment_menu,menu);
+
     }
 //--------------------------------------------------------------------------------------------
     @Override
@@ -145,12 +152,40 @@ public class NoteFragment extends Fragment implements MyOnClickListener{// им�
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);                                                    // меню выскакивающая по нажатию на картинку
         requireActivity().getMenuInflater().inflate(R.menu.card_menu,menu);
+
+        Button alertDialog = getActivity().findViewById(R.id.action_delete);
+        alertDialog.setOnClickListener(clickListenerDialog);
+
+
     }
+
+
+
+
 //--------------------------------------------------------------------------------------------------------
 
 
+    private View.OnClickListener clickListenerDialog = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setTitle(R.string.dialog_card)
+                    .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+
+                        }
+                    });
+            AlertDialog dialog = builder.create();
+            dialog.show();
+
+        }
+    };
+
     @Override
     public boolean onContextItemSelected(@NonNull MenuItem item) {
+
+
         int position = adapter.getMenuContextClickPosition();
         switch (item.getItemId()){
             case R.id.action_update:
@@ -165,10 +200,18 @@ public class NoteFragment extends Fragment implements MyOnClickListener{// им�
 
                 return true;
             case R.id.action_delete:
-                data.deleteCardData(position);
-                adapter.notifyItemRemoved(position);
-                return true;
+               if(R.string.yes){
+                   data.deleteCardData(position);
+                   adapter.notifyItemRemoved(position);
+                   return true;
+               }else {
+
+
         }
         return super.onContextItemSelected(item);
     }
+
+
+
+
 }

@@ -1,19 +1,28 @@
 package com.example.eighthlessonnew;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentManager;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.View;
+import android.widget.Button;
 
 import com.example.eighthlessonnew.observe.Publisher;
+import com.example.eighthlessonnew.view.DialogBuilderFragment;
 import com.example.eighthlessonnew.view.NoteFragment;
 
 public class MainActivity extends AppCompatActivity implements FragmentManager.OnBackStackChangedListener {
 
 
     private Publisher publisher = new Publisher();
+
+    public void onResultDialogFragment(String answer){
+
+    }
 
 
 
@@ -32,7 +41,12 @@ public class MainActivity extends AppCompatActivity implements FragmentManager.O
         initToolbar();
         navigation.addFragment(NoteFragment.newInstance(),false);
         getSupportFragmentManager().addOnBackStackChangedListener(this);
+
+
     }
+
+
+
  //--------------------------------------------------------------------
     @Override
     public void onBackStackChanged() {
@@ -64,6 +78,8 @@ public class MainActivity extends AppCompatActivity implements FragmentManager.O
     public Navigation getNavigation() {
         return navigation;
     }
+
+
 
 
 }
